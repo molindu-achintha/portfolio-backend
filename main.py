@@ -6,6 +6,7 @@ import logging
 import uvicorn
 import shutil
 import os
+import re
 
 from app.core.config import settings
 from app.services import embedding_service, llm_service, vector_db
@@ -27,7 +28,7 @@ app.add_middleware(
 
 class ChatRequest(BaseModel):
     message: str
-    model_provider: str = "groq" # defaults to groq
+    model_provider: str = "groq" 
 
 @app.get("/")
 def health_check():
@@ -48,8 +49,7 @@ async def chat_endpoint(request: ChatRequest):
              raise HTTPException(status_code=500, detail=f"Embedding Error: {str(e)}")
         
         # Retrieve Context
-        # Increase top_k to ensure we get all projects if requested
-        search_results = vector_db.query_vectors(embedding, top_k=100)
+        search_results = vector_db.query_vectors(embedding, top_k=5) # Reduced top_k back to 5 for speed/relevance
         
         context_text = ""
         unique_images = {} 
@@ -62,7 +62,7 @@ async def chat_endpoint(request: ChatRequest):
             logger.info(f"  Match: {match['id']} (score: {score:.3f}) - Metadata Keys: {list(metadata.keys())}")
             
             # Threshold to filter irrelevant context
-            if score > 0.15:
+            if score > 0.25:
                 context_text += text + "\n---\n"
                 
                 # Collect Image URLs
@@ -75,9 +75,18 @@ async def chat_endpoint(request: ChatRequest):
         logger.info(f"Found {len(unique_images)} unique images: {list(unique_images.keys())}")
 
         # Generate Answer (Using Groq / Llama 3)
-        # We default to Groq for speed and quality
         try:
-             response = llm_service.generate_response(query, context_text)
+             full_response = llm_service.generate_response(query, context_text)
+             
+             # Parse Suggestions
+             response_text = full_response
+             suggestions = []
+             
+             if "<<SUGGESTIONS>>" in full_response:
+                 parts = full_response.split("<<SUGGESTIONS>>")
+                 response_text = parts[0].strip()
+                 suggestions_raw = parts[1].strip().split("\n")
+                 suggestions = [s.strip() for s in suggestions_raw if s.strip()]
              
              # Append images to response if they exist and are not already mentioned
              if unique_images:
@@ -85,11 +94,11 @@ async def chat_endpoint(request: ChatRequest):
                  
                  for img_url, title in unique_images.items():
                      # Only append if the URL is NOT ANYWHERE in the response text
-                     if img_url not in response:
+                     if img_url not in response_text:
                          if not started_visuals_section:
-                             response += "\n\n**Visuals:**\n"
+                             response_text += "\n\n**Visuals:**\n"
                              started_visuals_section = True
-                         response += f"![{title}]({img_url})\n"
+                         response_text += f"![{title}]({img_url})\n"
                      else:
                          logger.info(f"Skipping duplicate image in response: {img_url}")
 
@@ -98,10 +107,11 @@ async def chat_endpoint(request: ChatRequest):
              raise HTTPException(status_code=500, detail=f"LLM Error: {str(e)}")
 
         return {
-            "response": response,
+            "response": response_text,
             "provider": "groq",
             "context_used": len(context_text) > 0,
-            "images": list(unique_images) 
+            "images": list(unique_images),
+            "suggestions": suggestions
         }
 
     except Exception as e:

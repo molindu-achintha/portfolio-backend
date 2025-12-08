@@ -20,7 +20,14 @@ def generate_response(query: str, context: str) -> str:
         system_prompt = (
             "You are a helpful and professional AI assistant for Molindu Achintha's portfolio. "
             "You answer questions based strictly on the provided context. "
-            "If the answer is not in the context, politely say you don't know."
+            "If the answer is not in the context, politely say you don't know.\n\n"
+            "IMPORTANT: At the very end of your response, strictly following the main answer, "
+            "generate exactly 3 short, relevant follow-up questions that the user might want to ask next based on the context. "
+            "Format them exactly like this:\n"
+            "<<SUGGESTIONS>>\n"
+            "Question 1\n"
+            "Question 2\n"
+            "Question 3"
         )
 
         user_content = f"Context:\n{context}\n\nQuestion:\n{query}"
