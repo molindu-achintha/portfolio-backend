@@ -26,9 +26,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class ChatMessage(BaseModel):
+    role: str
+    content: str
+
 class ChatRequest(BaseModel):
     message: str
-    model_provider: str = "groq" 
+    model_provider: str = "groq"
+    history: List[ChatMessage] = []  # Session history
 
 @app.get("/")
 def health_check():
@@ -39,7 +44,8 @@ async def chat_endpoint(request: ChatRequest):
     try:
         query = request.message
         provider = request.model_provider
-        logger.info(f"Received query: {query} (Provider: {provider})")
+        history = request.history
+        logger.info(f"Received query: {query} (Provider: {provider}, History: {len(history)} messages)")
 
         # Embed Query (Using Generic Service - BGE)
         try:
@@ -48,8 +54,8 @@ async def chat_endpoint(request: ChatRequest):
              logger.error(f"Embedding failed: {e}")
              raise HTTPException(status_code=500, detail=f"Embedding Error: {str(e)}")
         
-        # Retrieve Context
-        search_results = vector_db.query_vectors(embedding, top_k=5) # Reduced top_k back to 5 for speed/relevance
+        # Retrieve Context - increased top_k to get all projects
+        search_results = vector_db.query_vectors(embedding, top_k=100)
         
         context_text = ""
         unique_images = {} 
@@ -59,24 +65,32 @@ async def chat_endpoint(request: ChatRequest):
             score = match['score']
             metadata = match.get('metadata', {})
             text = metadata.get('text', '')
-            logger.info(f"  Match: {match['id']} (score: {score:.3f}) - Metadata Keys: {list(metadata.keys())}")
+            match_type = metadata.get('type', '')
+            logger.info(f"  Match: {match['id']} (score: {score:.3f}, type: {match_type})")
             
             # Threshold to filter irrelevant context
             if score > 0.25:
                 context_text += text + "\n---\n"
                 
-                # Collect Image URLs
-                if 'image_url' in metadata:
+                # Only collect images from PROJECT or PROFILE matches
+                if 'image_url' in metadata and match_type in ['project', 'profile']:
                     img_url = metadata['image_url']
                     title = metadata.get('title', 'Visual')
                     unique_images[img_url] = title
 
         logger.info(f"Retrieved context length: {len(context_text)}")
-        logger.info(f"Found {len(unique_images)} unique images: {list(unique_images.keys())}")
+        logger.info(f"Found {len(unique_images)} images: {list(unique_images.keys())}")
+
+        # Build conversation history string for context
+        history_text = ""
+        if history:
+            for msg in history[-6:]:  # Last 6 messages for context
+                role = "User" if msg.role == "user" else "Assistant"
+                history_text += f"{role}: {msg.content[:200]}...\n" if len(msg.content) > 200 else f"{role}: {msg.content}\n"
 
         # Generate Answer (Using Groq / Llama 3)
         try:
-             full_response = llm_service.generate_response(query, context_text)
+             full_response = llm_service.generate_response(query, context_text, history_text)
              
              # Parse Suggestions
              response_text = full_response
