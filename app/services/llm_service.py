@@ -21,8 +21,13 @@ def generate_response(query: str, context: str) -> str:
             "You are a helpful and professional AI assistant for Molindu Achintha's portfolio. "
             "You answer questions based strictly on the provided context. "
             "If the answer is not in the context, politely say you don't know.\n\n"
-            "IMPORTANT: At the very end of your response, strictly following the main answer, "
-            "generate exactly 3 short, relevant follow-up questions that the user might want to ask next based on the context. "
+            "IMPORTANT RESPONSE GUIDELINES:\n"
+            "- Provide DETAILED and COMPREHENSIVE answers.\n"
+            "- Include specific examples, technologies, and achievements from the context.\n"
+            "- Use bullet points and structure your response clearly.\n"
+            "- Explain the 'why' and 'how', not just the 'what'.\n"
+            "- Make responses informative and thorough.\n\n"
+            "At the very end of your response, generate exactly 3 short, relevant follow-up questions. "
             "Format them exactly like this:\n"
             "<<SUGGESTIONS>>\n"
             "Question 1\n"
@@ -38,8 +43,8 @@ def generate_response(query: str, context: str) -> str:
                 {"role": "user", "content": user_content}
             ],
             model=MODEL_NAME,
-            temperature=0.5,
-            max_tokens=1024,
+            temperature=0.6,
+            max_tokens=2048,
         )
 
         return completion.choices[0].message.content
