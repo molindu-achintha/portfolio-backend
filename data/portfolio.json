@@ -1,0 +1,233 @@
+{
+    "profile": {
+        "name": "Molindu Achintha",
+        "title": "Full Stack Developer & ML Engineer",
+        "tagline": "Building intelligent, scalable applications",
+        "bio": "I am a passionate Full Stack Developer and Machine Learning Engineer with a First Class Honours degree in Computer Science. I specialize in building modern web applications and integrating AI/ML capabilities to create intelligent user experiences.",
+        "location": "Sri Lanka",
+        "email": "your-email@example.com",
+        "linkedin": "https://linkedin.com/in/molindu-achintha",
+        "github": "https://github.com/molindu-achintha",
+        "resume_url": "/resume.pdf",
+        "avatar_image": "https://ucfhgxicgoylzifecdrl.supabase.co/storage/v1/object/public/portfolio/profile/molindu.jpeg"
+    },
+    "skills": {
+        "languages": [
+            "Python",
+            "JavaScript",
+            "TypeScript",
+            "Java",
+            "SQL"
+        ],
+        "frontend": [
+            "React",
+            "Next.js",
+            "Tailwind CSS",
+            "HTML5",
+            "CSS3"
+        ],
+        "backend": [
+            "Node.js",
+            "FastAPI",
+            "Express.js",
+            "Django"
+        ],
+        "ai_ml": [
+            "TensorFlow",
+            "PyTorch",
+            "Scikit-learn",
+            "LangChain",
+            "Pinecone",
+            "Gemini API",
+            "OpenAI API"
+        ],
+        "databases": [
+            "PostgreSQL",
+            "MongoDB",
+            "Redis",
+            "Pinecone Vector DB"
+        ],
+        "devops": [
+            "Docker",
+            "AWS",
+            "Vercel",
+            "GitHub Actions",
+            "CI/CD"
+        ],
+        "tools": [
+            "Git",
+            "VS Code",
+            "Jupyter",
+            "Postman"
+        ]
+    },
+    "projects": [
+        {
+            "id": "portfolio-rag",
+            "title": "AI Portfolio Website",
+            "description": "A personal portfolio with an AI-powered chat interface that uses RAG (Retrieval-Augmented Generation) to answer questions about my projects and experience. Built with React, FastAPI, Pinecone, and Gemini API.",
+            "long_description": "This project transforms a traditional portfolio into an interactive AI experience. Users can ask natural language questions about my work, and the AI retrieves relevant context from a vector database before generating accurate, personalized responses.",
+            "tech_stack": [
+                "React",
+                "Vite",
+                "Tailwind CSS",
+                "FastAPI",
+                "Python",
+                "Pinecone",
+                "Gemini API"
+            ],
+            "features": [
+                "Natural language chat interface",
+                "RAG-powered accurate responses",
+                "Real-time streaming responses",
+                "Mobile-responsive design"
+            ],
+            "status": "completed",
+            "demo_url": "https://molindu-achintha.github.io",
+            "github_url": "https://github.com/molindu-achintha/portfolio",
+            "image": "/images/projects/portfolio-rag.png",
+            "category": "fullstack"
+        },
+        {
+            "id": "edtech-rag",
+            "title": "EdTech RAG Pipeline",
+            "description": "An end-to-end Retrieval-Augmented Generation pipeline for an educational technology platform. Supports multimodal inputs including PDFs, images, and audio transcriptions.",
+            "long_description": "Designed and implemented a production-ready RAG system that processes educational content from multiple sources. Features OCR for image text extraction, ASR for audio transcription, and intelligent chunking for optimal retrieval.",
+            "tech_stack": [
+                "Python",
+                "Pinecone",
+                "OpenAI",
+                "Whisper",
+                "pytesseract",
+                "pdfminer"
+            ],
+            "features": [
+                "Multimodal content ingestion (PDF, images, audio)",
+                "OCR text extraction with pytesseract",
+                "Audio transcription with Whisper ASR",
+                "Hybrid chunking strategy",
+                "Vector similarity search"
+            ],
+            "status": "completed",
+            "demo_url": null,
+            "github_url": null,
+            "image": "/images/projects/edtech-rag.png",
+            "category": "ai_ml"
+        },
+        {
+            "id": "film-scheduler",
+            "title": "Film Shooting Schedule Optimizer",
+            "description": "A constraint programming solution for optimizing film production schedules. Uses OR-Tools CP-SAT solver to find optimal shooting orders while respecting actor availability and location constraints.",
+            "long_description": "This optimization tool helps film production teams create efficient shooting schedules. It considers actor availability windows, location grouping, scene dependencies, and cost factors to generate feasible and optimized production plans.",
+            "tech_stack": [
+                "Python",
+                "OR-Tools",
+                "CP-SAT",
+                "Excel",
+                "Pandas"
+            ],
+            "features": [
+                "Constraint satisfaction with CP-SAT solver",
+                "Actor availability windows",
+                "Location-based scene grouping",
+                "Cost optimization",
+                "Excel report generation"
+            ],
+            "status": "completed",
+            "demo_url": null,
+            "github_url": null,
+            "image": "/images/projects/film-scheduler.png",
+            "category": "optimization"
+        },
+        {
+            "id": "3d-mri-sr",
+            "title": "3D MRI Super-Resolution",
+            "description": "A deep learning project focused on enhancing the resolution of 3D MRI scans using GANs (Generative Adversarial Networks).",
+            "long_description": "This research project aims to improve medical imaging diagnosis by generating high-resolution 3D MRI volumes from low-resolution inputs. It utilizes advanced computer vision techniques and deep learning models to preserve anatomical details.",
+            "tech_stack": [
+                "Python",
+                "PyTorch",
+                "GANs",
+                "Medical Imaging",
+                "Computer Vision"
+            ],
+            "features": [
+                "3D Volume Super-Resolution",
+                "GAN-based architecture",
+                "Medical image preprocessing",
+                "Quality metric evaluation (PSNR/SSIM)"
+            ],
+            "status": "completed",
+            "demo_url": null,
+            "github_url": null,
+            "image": null,
+            "category": "ai_ml",
+            "documents": [
+                {
+                    "name": "Project Proposal",
+                    "url": "https://ucfhgxicgoylzifecdrl.supabase.co/storage/v1/object/public/portfolio/projects/3D%20MRI%20SR/3D%20Medical%20Super-Resolution%20Project%20Proposal.pdf",
+                    "type": "pdf"
+                }
+            ]
+        }
+    ],
+    "experience": [
+        {
+            "id": "exp-1",
+            "company": "Your Company Name",
+            "role": "Software Engineer",
+            "duration": "2023 - Present",
+            "location": "Remote",
+            "description": "Developed and maintained full-stack web applications. Implemented AI/ML features to enhance user experience.",
+            "responsibilities": [
+                "Built RESTful APIs using FastAPI and Node.js",
+                "Developed React frontend applications",
+                "Integrated machine learning models into production systems",
+                "Optimized database queries and system performance"
+            ],
+            "technologies": [
+                "React",
+                "Python",
+                "FastAPI",
+                "PostgreSQL",
+                "AWS"
+            ]
+        }
+    ],
+    "education": [
+        {
+            "id": "edu-1",
+            "institution": "Your University",
+            "degree": "BSc (Hons) Computer Science",
+            "grade": "First Class Honours",
+            "duration": "2019 - 2023",
+            "description": "Specialized in Artificial Intelligence and Software Engineering. Completed thesis on Machine Learning applications.",
+            "courses": [
+                "Machine Learning",
+                "Data Structures",
+                "Algorithms",
+                "Database Systems",
+                "Web Development"
+            ]
+        }
+    ],
+    "certifications": [
+        {
+            "id": "cert-1",
+            "name": "Sample Certification",
+            "issuer": "Certification Provider",
+            "date": "2024",
+            "url": "https://example.com/cert"
+        }
+    ],
+    "contact": {
+        "availability": "Open to opportunities",
+        "preferred_contact": "email",
+        "response_time": "Within 24 hours",
+        "social_links": {
+            "github": "https://github.com/molindu-achintha",
+            "linkedin": "https://linkedin.com/in/molindu-achintha",
+            "twitter": null
+        }
+    }
+}
