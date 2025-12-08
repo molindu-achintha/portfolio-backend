@@ -3,9 +3,9 @@
         "name": "Molindu Achintha",
         "title": "Full Stack Developer & ML Engineer",
         "tagline": "Building intelligent, scalable applications",
-        "bio": "I am a passionate Full Stack Developer and Machine Learning Engineer with a First Class Honours degree in Computer Science. I specialize in building modern web applications and integrating AI/ML capabilities to create intelligent user experiences.",
+        "bio": "Computer Science undergraduate at the University of Moratuwa passionate about using AI, machine learning, and data analytics to solve real-world problems. Experienced in building solutions in computer vision, NLP, gaze estimation, and predictive modelling through internships and industry projects. Motivated to create technology that helps people, improves efficiency, and brings new ideas to life.",
         "location": "Sri Lanka",
-        "email": "your-email@example.com",
+        "email": "molindu.21@cse.mrt.ac.lk",
         "linkedin": "https://linkedin.com/in/molindu-achintha",
         "github": "https://github.com/molindu-achintha",
         "resume_url": "/resume.pdf",
@@ -14,131 +14,45 @@
     "skills": {
         "languages": [
             "Python",
-            "JavaScript",
-            "TypeScript",
+            "C++",
             "Java",
+            "Swift",
             "SQL"
         ],
-        "frontend": [
-            "React",
-            "Next.js",
-            "Tailwind CSS",
-            "HTML5",
-            "CSS3"
-        ],
-        "backend": [
-            "Node.js",
-            "FastAPI",
-            "Express.js",
-            "Django"
-        ],
         "ai_ml": [
-            "TensorFlow",
+            "Deep Learning",
+            "Computer Vision",
+            "Natural Language Processing (NLP)",
+            "Generative AI (GANs)",
+            "Reinforcement Learning",
+            "Predictive Modeling (Regression, Classification, Clustering)"
+        ],
+        "frameworks_libraries": [
             "PyTorch",
+            "TensorFlow",
             "Scikit-learn",
-            "LangChain",
-            "Pinecone",
-            "Gemini API",
-            "OpenAI API"
+            "Keras",
+            "Pandas",
+            "NumPy",
+            "OpenCV",
+            "Matplotlib"
         ],
-        "databases": [
-            "PostgreSQL",
-            "MongoDB",
-            "Redis",
-            "Pinecone Vector DB"
-        ],
-        "devops": [
-            "Docker",
-            "AWS",
-            "Vercel",
-            "GitHub Actions",
-            "CI/CD"
-        ],
-        "tools": [
+        "development_platforms": [
+            "React",
+            "Node.js",
+            "Flask",
             "Git",
-            "VS Code",
-            "Jupyter",
-            "Postman"
+            "Unity",
+            "REST APIs",
+            "MySQL",
+            "Firebase",
+            "MongoDB"
+        ],
+        "cloud": [
+            "AWS (S3, EC2)"
         ]
     },
     "projects": [
-        {
-            "id": "portfolio-rag",
-            "title": "AI Portfolio Website",
-            "description": "A personal portfolio with an AI-powered chat interface that uses RAG (Retrieval-Augmented Generation) to answer questions about my projects and experience. Built with React, FastAPI, Pinecone, and Gemini API.",
-            "long_description": "This project transforms a traditional portfolio into an interactive AI experience. Users can ask natural language questions about my work, and the AI retrieves relevant context from a vector database before generating accurate, personalized responses.",
-            "tech_stack": [
-                "React",
-                "Vite",
-                "Tailwind CSS",
-                "FastAPI",
-                "Python",
-                "Pinecone",
-                "Gemini API"
-            ],
-            "features": [
-                "Natural language chat interface",
-                "RAG-powered accurate responses",
-                "Real-time streaming responses",
-                "Mobile-responsive design"
-            ],
-            "status": "completed",
-            "demo_url": "https://molindu-achintha.github.io",
-            "github_url": "https://github.com/molindu-achintha/portfolio",
-            "image": "/images/projects/portfolio-rag.png",
-            "category": "fullstack"
-        },
-        {
-            "id": "edtech-rag",
-            "title": "EdTech RAG Pipeline",
-            "description": "An end-to-end Retrieval-Augmented Generation pipeline for an educational technology platform. Supports multimodal inputs including PDFs, images, and audio transcriptions.",
-            "long_description": "Designed and implemented a production-ready RAG system that processes educational content from multiple sources. Features OCR for image text extraction, ASR for audio transcription, and intelligent chunking for optimal retrieval.",
-            "tech_stack": [
-                "Python",
-                "Pinecone",
-                "OpenAI",
-                "Whisper",
-                "pytesseract",
-                "pdfminer"
-            ],
-            "features": [
-                "Multimodal content ingestion (PDF, images, audio)",
-                "OCR text extraction with pytesseract",
-                "Audio transcription with Whisper ASR",
-                "Hybrid chunking strategy",
-                "Vector similarity search"
-            ],
-            "status": "completed",
-            "demo_url": null,
-            "github_url": null,
-            "image": "/images/projects/edtech-rag.png",
-            "category": "ai_ml"
-        },
-        {
-            "id": "film-scheduler",
-            "title": "Film Shooting Schedule Optimizer",
-            "description": "A constraint programming solution for optimizing film production schedules. Uses OR-Tools CP-SAT solver to find optimal shooting orders while respecting actor availability and location constraints.",
-            "long_description": "This optimization tool helps film production teams create efficient shooting schedules. It considers actor availability windows, location grouping, scene dependencies, and cost factors to generate feasible and optimized production plans.",
-            "tech_stack": [
-                "Python",
-                "OR-Tools",
-                "CP-SAT",
-                "Excel",
-                "Pandas"
-            ],
-            "features": [
-                "Constraint satisfaction with CP-SAT solver",
-                "Actor availability windows",
-                "Location-based scene grouping",
-                "Cost optimization",
-                "Excel report generation"
-            ],
-            "status": "completed",
-            "demo_url": null,
-            "github_url": null,
-            "image": "/images/projects/film-scheduler.png",
-            "category": "optimization"
-        },
         {
             "id": "3d-mri-sr",
             "title": "3D MRI Super-Resolution",
@@ -169,55 +83,207 @@
                     "type": "pdf"
                 }
             ]
-        }
-    ],
-    "experience": [
+        },
         {
-            "id": "exp-1",
-            "company": "Your Company Name",
-            "role": "Software Engineer",
-            "duration": "2023 - Present",
-            "location": "Remote",
-            "description": "Developed and maintained full-stack web applications. Implemented AI/ML features to enhance user experience.",
-            "responsibilities": [
-                "Built RESTful APIs using FastAPI and Node.js",
-                "Developed React frontend applications",
-                "Integrated machine learning models into production systems",
-                "Optimized database queries and system performance"
-            ],
-            "technologies": [
-                "React",
+            "id": "verdex-mobile-app",
+            "title": "Verdex Mobile App",
+            "description": "Mobile app for farmers to detect crop diseases and get recommendations.",
+            "long_description": "Developed a mobile application enabling farmers to upload crop images, detect diseases, and access solutions from a knowledge base. Deployed a trained ML model on AWS EC2 for disease prediction and used Gemini 2.0-flash free API for solution recommendation.",
+            "tech_stack": [
                 "Python",
-                "FastAPI",
-                "PostgreSQL",
-                "AWS"
-            ]
+                "AWS EC2",
+                "Gemini API",
+                "Mobile App Development"
+            ],
+            "features": [
+                "Crop disease detection from images",
+                "Fertilizer and solution recommendations",
+                "Knowledge base integration"
+            ],
+            "status": "completed",
+            "demo_url": null,
+            "github_url": null,
+            "category": "ai_ml"
+        },
+        {
+            "id": "diabetic-retinopathy",
+            "title": "Diabetic Retinopathy Detection Using Fundus Images",
+            "description": "Machine learning classifier to detect diabetic retinopathy from fundus images.",
+            "long_description": "Trained a classifier using combined outputs from InceptionNet and ResNet models. Applied SMOTE for class imbalance and multiple data augmentation techniques to improve model performance.",
+            "tech_stack": [
+                "Python",
+                "TensorFlow",
+                "Keras",
+                "SMOTE",
+                "Data Augmentation"
+            ],
+            "features": [
+                "Fundus image classification",
+                "Class imbalance handling",
+                "Data augmentation techniques"
+            ],
+            "status": "completed",
+            "demo_url": null,
+            "github_url": null,
+            "category": "ai_ml"
+        },
+        {
+            "id": "melanoma-classification",
+            "title": "SIIM-ISIC Melanoma Classification Using Transfer Learning",
+            "description": "Used transfer learning for melanoma detection from dermoscopic images.",
+            "long_description": "Implemented a modified InceptionNet B7 architecture for melanoma classification. Applied preprocessing including DICOM to grayscale conversion, denoising, contrast enhancement, and segmentation.",
+            "tech_stack": [
+                "Python",
+                "TensorFlow",
+                "Keras",
+                "InceptionNet",
+                "Image Preprocessing"
+            ],
+            "features": [
+                "Melanoma classification",
+                "DICOM preprocessing pipeline",
+                "Transfer learning with InceptionNet"
+            ],
+            "status": "completed",
+            "demo_url": null,
+            "github_url": null,
+            "category": "ai_ml"
+        },
+        {
+            "id": "sinhala-rag",
+            "title": "Multimodal Sinhala Fact-Checking RAG System",
+            "description": "Agentic AI system for verifying Sinhala-language news and social media content.",
+            "long_description": "Built a multi-agent Retrieval-Augmented Generation (RAG) system for Sinhala misinformation detection. Agents handle claim extraction, linguistic processing (tokenization, NER, transliteration), evidence retrieval from trusted sources, reasoning, and verdict generation. System outputs verdicts like True, False, Partially False, Misleading with justifications in Sinhala.",
+            "tech_stack": [
+                "Python",
+                "LangChain",
+                "Pinecone",
+                "LLMs",
+                "Multilingual NLP",
+                "OCR"
+            ],
+            "features": [
+                "Agentic AI workflow with multiple agents",
+                "Sinhala-specific linguistic processing",
+                "RAG-based evidence retrieval",
+                "Automated reasoning and verdict generation"
+            ],
+            "status": "completed",
+            "demo_url": null,
+            "github_url": null,
+            "category": "ai_ml"
+        },
+        {
+            "id": "sinhala-idioms",
+            "title": "Sinhala Idioms Extraction and Translation",
+            "description": "Extracted Sinhala idioms from text and translated them into equivalent English idioms.",
+            "long_description": "Collected and processed Sinhala texts using OCR from books and other sources. Built a dataset of Sinhala idioms and mapped them to legitimate English idiomatic expressions for NLP applications.",
+            "tech_stack": [
+                "Python",
+                "OCR",
+                "NLP",
+                "Dataset Construction"
+            ],
+            "features": [
+                "Sinhala idiom extraction",
+                "English idiom translation",
+                "OCR-based dataset collection"
+            ],
+            "status": "completed",
+            "demo_url": null,
+            "github_url": null,
+            "category": "ai_ml"
         }
     ],
     "education": [
         {
-            "id": "edu-1",
-            "institution": "Your University",
-            "degree": "BSc (Hons) Computer Science",
-            "grade": "First Class Honours",
-            "duration": "2019 - 2023",
-            "description": "Specialized in Artificial Intelligence and Software Engineering. Completed thesis on Machine Learning applications.",
+            "id": "edu-moratuwa",
+            "institution": "University of Moratuwa",
+            "degree": "B.Sc. in Computer Science and Engineering",
+            "duration": "2022 – 2026 (Expected)",
+            "location": "Moratuwa, Sri Lanka",
+            "description": "Undergraduate program focusing on Artificial Intelligence, Machine Learning, and Software Engineering. Gaining practical experience in AI, data analytics, and computational problem solving.",
             "courses": [
                 "Machine Learning",
                 "Data Structures",
                 "Algorithms",
                 "Database Systems",
-                "Web Development"
+                "Linear Algebra",
+                "Calculus",
+                "Optimization"
             ]
         }
     ],
     "certifications": [
         {
             "id": "cert-1",
-            "name": "Sample Certification",
-            "issuer": "Certification Provider",
+            "name": "iOS & Swift - The Complete iOS App Development Bootcamp",
+            "issuer": "Udemy",
             "date": "2024",
-            "url": "https://example.com/cert"
+            "url": "https://www.udemy.com/certificate/UC-2e866a4d-2b92-4ad3-91ec-949d5c5dcec2/"
+        },
+        {
+            "id": "cert-2",
+            "name": "Supervised Machine Learning: Regression and Classification",
+            "issuer": "Coursera",
+            "date": "2024",
+            "url": "https://www.coursera.org/account/accomplishments/verify/H4MUPCYVQJ88"
+        },
+        {
+            "id": "cert-3",
+            "name": "Advanced Learning Algorithms",
+            "issuer": "Coursera",
+            "date": "2024",
+            "url": "https://www.coursera.org/account/accomplishments/verify/9KP7NUVGQ2WP"
+        },
+        {
+            "id": "cert-4",
+            "name": "Unsupervised Learning, Recommenders, Reinforcement Learning",
+            "issuer": "Coursera",
+            "date": "2024",
+            "url": "https://www.coursera.org/account/accomplishments/verify/9KP7NUVGQ2WP"
+        },
+        {
+            "id": "cert-5",
+            "name": "Natural Language Processing with Classification and Vector Spaces",
+            "issuer": "Coursera",
+            "date": "2024",
+            "url": "https://www.coursera.org/account/accomplishments/verify/KANSAXGGW8VH"
+        },
+        {
+            "id": "cert-6",
+            "name": "Introduction to TensorFlow for AI, Machine Learning, and Deep Learning",
+            "issuer": "Coursera",
+            "date": "2024",
+            "url": "https://www.coursera.org/account/accomplishments/verify/SNSAN9RF7HWQ"
+        },
+        {
+            "id": "cert-7",
+            "name": "Convolutional Neural Networks in TensorFlow",
+            "issuer": "Coursera",
+            "date": "2024",
+            "url": "https://coursera.org/verify/UMRTFLEEZGQF"
+        },
+        {
+            "id": "cert-8",
+            "name": "Natural Language Processing in TensorFlow",
+            "issuer": "Coursera",
+            "date": "2024",
+            "url": "https://www.coursera.org/account/accomplishments/verify/H6C7QF2GQHFK"
+        },
+        {
+            "id": "cert-9",
+            "name": "Deep Neural Networks with PyTorch",
+            "issuer": "Coursera",
+            "date": "2024",
+            "url": "https://www.coursera.org/account/accomplishments/verify/TN87ZCRDWHYK"
+        },
+        {
+            "id": "cert-10",
+            "name": "Introduction to Large Language Models",
+            "issuer": "Coursera",
+            "date": "2024",
+            "url": "https://www.coursera.org/account/accomplishments/verify/MYSCQ8JLQXQ3"
         }
     ],
     "contact": {
