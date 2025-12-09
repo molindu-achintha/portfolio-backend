@@ -196,6 +196,108 @@
             "category": "ai_ml"
         }
     ],
+    "experience": [
+        {
+            "id": "exp-braingaze-gamedev",
+            "company": "Braingaze",
+            "role": "Game Developer - Part Time",
+            "duration": "2024 March - 2025 Dec",
+            "location": "Remote",
+            "description": "Developed two gaze-controlled therapeutic games for integration into the BrainGaze Focus platform to support ADHD and ASD therapy.",
+            "responsibilities": [
+                "Developed gaze-controlled therapeutic games",
+                "Integrated games into BrainGaze Focus platform",
+                "Supported ADHD and ASD therapy applications"
+            ],
+            "technologies": [
+                "Unity",
+                "C#",
+                "Eye Tracking",
+                "Game Development"
+            ]
+        },
+        {
+            "id": "exp-braingaze-intern",
+            "company": "Braingaze",
+            "role": "Machine Learning and R&D Engineering Intern",
+            "duration": "2024 Dec - 2025 May",
+            "location": "Remote",
+            "description": "Adapted and enhanced eye-tracking analysis tools to extract and analyze vergence and pupil signals from video and ARKit data, demonstrating reliable oddball-task responses and improving gaze-point estimation accuracy.",
+            "responsibilities": [
+                "Enhanced eye-tracking analysis tools",
+                "Extracted vergence and pupil signals from video and ARKit data",
+                "Improved gaze-point estimation accuracy",
+                "Demonstrated reliable oddball-task responses"
+            ],
+            "technologies": [
+                "Python",
+                "Computer Vision",
+                "ARKit",
+                "Eye Tracking",
+                "Machine Learning"
+            ]
+        },
+        {
+            "id": "exp-tortil-lead",
+            "company": "Tortil Inc.",
+            "role": "Project Lead - Machine Learning and R&D",
+            "duration": "2025 Aug - Present",
+            "location": "Remote",
+            "description": "Leading ML and R&D projects including CMS (Content Management System) - an agentic-AI-powered system that automates end-to-end workflow of creating, organizing, and distributing content across users and teams. Also developing Continuity Checker - a computer vision system that detects continuity mismatches between shots.",
+            "responsibilities": [
+                "Lead development of agentic-AI-powered CMS",
+                "Building Continuity Checker computer vision system",
+                "Detecting continuity mismatches in film production"
+            ],
+            "technologies": [
+                "Python",
+                "Agentic AI",
+                "Computer Vision",
+                "LLMs",
+                "RAG"
+            ]
+        },
+        {
+            "id": "exp-tortil-optimization",
+            "company": "Tortil Inc.",
+            "role": "Team Member - Optimization and R&D",
+            "duration": "2025 Aug - Present",
+            "location": "Remote",
+            "description": "Tested the film-production scheduling algorithm and enhanced it by integrating a clustering module based on scene proximity.",
+            "responsibilities": [
+                "Tested film-production scheduling algorithm",
+                "Integrated clustering module based on scene proximity",
+                "Enhanced scheduling optimization"
+            ],
+            "technologies": [
+                "Python",
+                "Optimization",
+                "Clustering",
+                "Algorithm Design"
+            ]
+        },
+        {
+            "id": "exp-square1ai",
+            "company": "Square1AI",
+            "role": "Leader - AI Team",
+            "duration": "2025 Sep - Present",
+            "location": "Remote",
+            "description": "Lead the AI team at our startup to build next-generation agentic-AI learning platform with personalized, RAG-powered tools for students and teachers.",
+            "responsibilities": [
+                "Leading AI team development",
+                "Building agentic-AI learning platform",
+                "Implementing RAG-powered educational tools",
+                "Creating personalized learning experiences"
+            ],
+            "technologies": [
+                "Python",
+                "Agentic AI",
+                "RAG",
+                "LLMs",
+                "EdTech"
+            ]
+        }
+    ],
     "education": [
         {
             "id": "edu-moratuwa",
