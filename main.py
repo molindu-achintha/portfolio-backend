@@ -159,9 +159,9 @@ async def chat_endpoint(request: ChatRequest):
                 logger.info("Adding profile image (explicitly requested)")
                 final_images.append(profile_image)
             
-            # Project media: ONLY attach if:
-            # 1. User mentions the project by keyword AND
-            # 2. User wants media (show/video/image keywords)
+            # Project media:
+            # 1. If user explicitly wants media, show all relevant images/videos
+            # 2. If project is STRONGLY matched in context (high score), show video even without explicit request
             if wants_media:
                 for project_id in matched_projects:
                     if project_id in media_by_project:
@@ -170,7 +170,12 @@ async def chat_endpoint(request: ChatRequest):
                         final_images.extend(media['images'])
                         final_videos.extend(media['videos'])
             else:
-                logger.info("User did not explicitly request media, skipping attachments")
+                # Fallback: Check if any project was strongly matched in retrieval (automatic video suggestion)
+                for project_id, media in media_by_project.items():
+                    if media['videos']:
+                        logger.info(f"Auto-suggesting video for relevant project: {project_id}")
+                        final_videos.extend(media['videos'])
+
             
             # Deduplicate
             final_images = list(dict.fromkeys(final_images))
