@@ -1,0 +1,32 @@
+# cloudbuild.yaml
+steps:
+  # Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/portfolio-backend:$SHORT_SHA', '.']
+
+  # Push Docker image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/portfolio-backend:$SHORT_SHA']
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      [
+        'run', 'deploy', 'portfolio-backend',
+        '--image', 'gcr.io/$PROJECT_ID/portfolio-backend:$SHORT_SHA',
+        '--platform', 'managed',
+        '--region', 'us-central1',
+        '--allow-unauthenticated',
+        '--memory', '4Gi',
+        '--cpu', '2',
+        '--set-env-vars',
+        'PINECONE_API_KEY=pcsk_qNtip_AS4FnysHsy3iC6rW8pvViWHdUYt3QFRVDV4M25MF2E3nMmfQQoBXYJyeCkKF7Qo,PINECONE_INDEX_NAME=portfolio,HUGGINGFACE_API_KEY=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,OPENROUTER_API_KEY=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'
+      ]
+
+images:
+  - 'gcr.io/$PROJECT_ID/portfolio-backend:$SHORT_SHA'
+
+# trigger on push to main branch
+substitutions:
+  _REGION: 'us-central1'
