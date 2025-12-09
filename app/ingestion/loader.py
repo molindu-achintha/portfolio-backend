@@ -1,17 +1,18 @@
 """
-Portfolio Data Ingestion Script (Groq + Pinecone)
+Portfolio Data Ingestion Script (OpenCLIP + Pinecone)
 Loads portfolio data from JSON and creates embeddings for RAG retrieval.
-Images are indexed by their metadata (Project Title/Description) for retrieval.
+Uses OpenCLIP for multimodal embeddings (text + images in same vector space).
 """
 import time
-import uuid
-import re
 import json
 import logging
 from typing import List, Dict, Any
 from pathlib import Path
-from app.services import embedding_service
+from app.services.clip_service import get_text_embedding, get_image_embedding
 from app.services.vector_db import upsert_vectors, delete_all_vectors
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 DATA_PATH = Path(__file__).parent.parent.parent / "data" / "portfolio.json"
 
@@ -74,12 +75,10 @@ def create_text_chunks(data):
         Category: {project.get('category', '')}
         """
         
-        # Append documents if present so LLM knows about them
         if 'documents' in project:
             docs_str = "\n".join([f"- {d['name']} ({d['type']}): {d['url']}" for d in project['documents']])
             project_text += f"\nDocuments:\n{docs_str}\n"
         
-        # Only PROJECTS have image_url in metadata
         chunks.append({
             "id": f"project-{project.get('id', 'unknown')}",
             "text": project_text.strip(),
@@ -90,8 +89,8 @@ def create_text_chunks(data):
                 "title": project.get('title'),
                 "demo_url": project.get('demo_url'),
                 "github_url": project.get('github_url'),
-                "image_url": project.get('image'),  # Only projects have images
-                "video_url": project.get('video')   # Only projects have videos
+                "image_url": project.get('image'),
+                "video_url": project.get('video')
             }
         })
     
@@ -168,26 +167,26 @@ def clean_metadata(metadata):
     return {k: v for k, v in metadata.items() if v is not None}
 
 def load_data():
-    """Main ingestion function."""
+    """Main ingestion function with CLIP embeddings."""
     print("Clearing existing vectors...")
     delete_all_vectors()
     
     print("Loading portfolio data from JSON...")
     data = load_portfolio_data()
     
-    print("\n📝 Creating chunks...")
+    print("\n📝 Creating text chunks...")
     chunks = create_text_chunks(data)
-    print(f"   Found {len(chunks)} chunks")
+    print(f"   Found {len(chunks)} text chunks")
     
     vectors = []
+    
+    # 1. Embed all text chunks
+    print("\n🔤 Embedding text chunks with OpenCLIP...")
     for chunk in chunks:
-        print(f"  Embedding: {chunk['id']}")
+        print(f"  Text: {chunk['id']}")
         try:
-            # Generic embedding service (HF BGE)
-            embedding = embedding_service.get_embedding(chunk['text'])
-            time.sleep(0.5) 
+            embedding = get_text_embedding(chunk['text'])
             
-            # Clean metadata
             raw_metadata = {
                 "text": chunk['text'],
                 "type": chunk['type'],
@@ -201,11 +200,38 @@ def load_data():
                 "metadata": cleaned_metadata
             })
         except Exception as e:
-            print(f"  ERROR embedding {chunk['id']}: {e}")
+            print(f"  ERROR embedding text {chunk['id']}: {e}")
             continue
     
+    # 2. Embed images (creates separate vectors in same space)
+    print("\n🖼️ Embedding images with OpenCLIP...")
+    for chunk in chunks:
+        image_url = chunk.get('metadata', {}).get('image_url')
+        if image_url and image_url.startswith('http'):
+            print(f"  Image: {chunk['id']}")
+            try:
+                img_embedding = get_image_embedding(image_url)
+                
+                # Image vector gets same metadata as parent chunk
+                raw_metadata = {
+                    "text": f"[Image for {chunk.get('metadata', {}).get('title', chunk['id'])}]",
+                    "type": f"{chunk['type']}_image",
+                    "parent_id": chunk['id'],
+                    **chunk.get('metadata', {})
+                }
+                cleaned_metadata = clean_metadata(raw_metadata)
+                
+                vectors.append({
+                    "id": f"{chunk['id']}-image",
+                    "values": img_embedding,
+                    "metadata": cleaned_metadata
+                })
+            except Exception as e:
+                print(f"  WARNING: Could not embed image for {chunk['id']}: {e}")
+                continue
+    
     if vectors:
-        print(f"\nUpserting {len(vectors)} vectors to Pinecone...")
+        print(f"\n⬆️ Upserting {len(vectors)} vectors to Pinecone...")
         upsert_vectors(vectors)
         print("✅ Ingestion Complete!")
     else:

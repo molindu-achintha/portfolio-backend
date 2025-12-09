@@ -6,12 +6,11 @@ from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
-# Using Llama 3.3 70B Instruct (free) via OpenRouter
 MODEL_NAME = "meta-llama/llama-3.3-70b-instruct:free"
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 def generate_response(query: str, context: str, history: str = "") -> str:
-    """Generate a response using OpenRouter (Llama 3.3 70B)."""
+    """Generate a response using OpenRouter (Mistral Large)."""
     if not settings.OPENROUTER_API_KEY:
         return "Error: OPENROUTER_API_KEY is missing in .env."
 
@@ -20,15 +19,14 @@ def generate_response(query: str, context: str, history: str = "") -> str:
 Answer questions about your portfolio in FIRST PERSON (use "I", "my", "me").
 
 RESPONSE STRUCTURE:
-1. First, think through the question step by step (show your reasoning)
-2. Then provide a detailed, comprehensive answer
+1. Think through the question step by step
+2. Provide a detailed, comprehensive answer
 
-FORMAT RULES FOR ANSWER:
+FORMAT RULES:
 - Use ### for section headers
 - Use **bold** SPARINGLY - only for key project names and technologies
 - Use bullet points for lists
 - Be extremely detailed and thorough
-- Cover all relevant aspects from the context
 
 IMPORTANT - END WITH SUGGESTIONS:
 At the very end, add exactly 3 follow-up questions:
@@ -72,13 +70,12 @@ Think through this carefully, then provide your detailed answer:"""
 
         result = response.json()
         
-        # Extract content from OpenAI-compatible response
         if 'choices' in result and len(result['choices']) > 0:
             output = result['choices'][0].get('message', {}).get('content', '')
         else:
             output = str(result)
         
-        # Format <think>...</think> blocks as a visible section
+        # Format thinking blocks
         def format_thinking(match):
             thinking_content = match.group(1).strip()
             return f"""### 💭 Thinking Process

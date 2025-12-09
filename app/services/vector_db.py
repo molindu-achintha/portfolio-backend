@@ -4,11 +4,12 @@ import time
 from app.core.config import settings
 
 pc = Pinecone(api_key=settings.PINECONE_API_KEY)
-index = pc.Index(settings.PINECONE_INDEX_NAME)
+
+# OpenCLIP ViT-B-32 produces 512-dimensional embeddings
+REQUIRED_DIMENSION = 512
 
 def _ensure_index_exists():
-    # BGE model produces 384-dim embeddings
-    REQUIRED_DIMENSION = 384
+    global index
     
     existing_indexes = [i.name for i in pc.list_indexes()]
     if settings.PINECONE_INDEX_NAME in existing_indexes:
@@ -17,15 +18,15 @@ def _ensure_index_exists():
         if details.dimension != REQUIRED_DIMENSION:
             print(f"Index dimension mismatch (Found: {details.dimension}, Expected: {REQUIRED_DIMENSION}). Deleting...")
             pc.delete_index(settings.PINECONE_INDEX_NAME)
-            time.sleep(5) # Wait for deletion
-            existing_indexes.remove(settings.PINECONE_INDEX_NAME)
+            time.sleep(10)  # Wait for deletion
+            existing_indexes = [i.name for i in pc.list_indexes()]
 
     if settings.PINECONE_INDEX_NAME not in existing_indexes:
         print(f"Creating index '{settings.PINECONE_INDEX_NAME}' ({REQUIRED_DIMENSION} dim, cosine)...")
         try:
             pc.create_index(
                 name=settings.PINECONE_INDEX_NAME,
-                dimension=REQUIRED_DIMENSION, # BGE-small-en-v1.5 dimension
+                dimension=REQUIRED_DIMENSION,
                 metric="cosine",
                 spec=ServerlessSpec(
                     cloud="aws",
@@ -34,13 +35,21 @@ def _ensure_index_exists():
             )
             # Wait for index to be ready
             while not pc.describe_index(settings.PINECONE_INDEX_NAME).status['ready']:
-                time.sleep(1)
+                time.sleep(2)
             print(f"Index '{settings.PINECONE_INDEX_NAME}' created successfully!")
         except Exception as e:
             print(f"Failed to create index automatically: {e}")
             raise e
+    
+    return pc.Index(settings.PINECONE_INDEX_NAME)
+
+# Initialize index
+index = _ensure_index_exists() if settings.PINECONE_API_KEY else None
 
 def query_vectors(vector: list, top_k: int = 3):
+    global index
+    if index is None:
+        index = _ensure_index_exists()
     return index.query(
         vector=vector,
         top_k=top_k,
@@ -48,15 +57,14 @@ def query_vectors(vector: list, top_k: int = 3):
     )
 
 def upsert_vectors(vectors):
-    _ensure_index_exists()
-    # Re-initialize index after potential recreation
-    index = pc.Index(settings.PINECONE_INDEX_NAME) 
+    global index
+    index = _ensure_index_exists()
     index.upsert(vectors=vectors)
 
 def delete_all_vectors():
+    global index
     try:
-        _ensure_index_exists()
-        index = pc.Index(settings.PINECONE_INDEX_NAME)
+        index = _ensure_index_exists()
         index.delete(delete_all=True)
         print(f"Index '{settings.PINECONE_INDEX_NAME}' cleared successfully.")
     except Exception as e:
