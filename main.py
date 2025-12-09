@@ -127,8 +127,13 @@ async def chat_endpoint(request: ChatRequest):
                         media_by_project[project_id] = {
                             'images': [],
                             'videos': [],
-                            'title': metadata.get('title', 'Project')
+                            'title': metadata.get('title', 'Project'),
+                            'max_score': 0.0
                         }
+                    
+                    # Track max score for this project
+                    if score > media_by_project[project_id]['max_score']:
+                        media_by_project[project_id]['max_score'] = score
                     
                     if 'image_url' in metadata and metadata['image_url']:
                         media_by_project[project_id]['images'].append(metadata['image_url'])
@@ -170,10 +175,18 @@ async def chat_endpoint(request: ChatRequest):
                         final_images.extend(media['images'])
                         final_videos.extend(media['videos'])
             else:
-                # Fallback: Check if any project was strongly matched in retrieval (automatic video suggestion)
+                # Fallback: Auto-suggest video ONLY if:
+                # A. Project matches explicitly by keyword (matched_projects) AND has decent score (>0.35)
+                # B. Project is the PRIMARY topic (very high score > 0.50)
                 for project_id, media in media_by_project.items():
-                    if media['videos']:
-                        logger.info(f"Auto-suggesting video for relevant project: {project_id}")
+                    if not media['videos']:
+                        continue
+                        
+                    is_keyword_match = project_id in matched_projects
+                    score = media['max_score']
+                    
+                    if (is_keyword_match and score > 0.35) or (score > 0.50):
+                        logger.info(f"Auto-suggesting video for {project_id} (Score: {score:.2f}, Keyword: {is_keyword_match})")
                         final_videos.extend(media['videos'])
 
             
