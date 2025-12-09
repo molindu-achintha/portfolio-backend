@@ -7,8 +7,9 @@ WORKDIR /app
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PORT=8080
 
-# Set cache directories to /app (writable in OpenShift)
+# Set cache directories to /app (writable)
 ENV HF_HOME=/app/.cache/huggingface
 ENV TORCH_HOME=/app/.cache/torch
 ENV XDG_CACHE_HOME=/app/.cache
@@ -29,13 +30,20 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Pre-download OpenCLIP model during build (not at runtime)
+# This prevents downloading ~800MB model on every startup
 RUN python -c "import open_clip; open_clip.create_model_and_transforms('ViT-B-32', pretrained='laion2b_s34b_b79k')"
 
 # Copy application code
 COPY . .
 
-# Expose port (OpenShift uses 8080 by default)
+# Expose port (Documentation only, Cloud Run ignores this but good practice)
 EXPOSE 8080
 
 # Run with gunicorn for production
-CMD ["gunicorn", "main:app", "-w", "2", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:8080"]
+# Uses $PORT variable injected by Cloud Run
+CMD exec gunicorn main:app \
+    --workers 1 \
+    --threads 8 \
+    --timeout 0 \
+    --worker-class uvicorn.workers.UvicornWorker \
+    --bind :$PORT

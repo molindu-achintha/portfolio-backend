@@ -25,21 +25,18 @@ def _load_model():
     if _model is None:
         logger.info(f"Loading OpenCLIP model: {MODEL_NAME} ({PRETRAINED})")
         
-        # Use MPS (Apple Silicon) if available, else CPU
-        if torch.backends.mps.is_available():
-            _device = torch.device("mps")
-        elif torch.cuda.is_available():
-            _device = torch.device("cuda")
-        else:
-            _device = torch.device("cpu")
+        # Force CPU usage on Cloud Run to avoid BFloat16/MPS issues
+        # Cloud Run environments often don't support BFloat16 well on CPUs
+        _device = torch.device("cpu")
+        logger.info(f"Using device: {_device} (Forced for Cloud Run compatibility)")
         
-        logger.info(f"Using device: {_device}")
-        
+        # Load model with forced precision=fp32
         _model, _, _preprocess = open_clip.create_model_and_transforms(
             MODEL_NAME, 
-            pretrained=PRETRAINED
+            pretrained=PRETRAINED,
+            precision='fp32',
+            device=_device
         )
-        _model = _model.to(_device)
         _model.eval()
         
         _tokenizer = open_clip.get_tokenizer(MODEL_NAME)
@@ -55,12 +52,14 @@ def get_text_embedding(text: str) -> list:
     model, _, tokenizer, device = _load_model()
     
     try:
-        with torch.no_grad(), torch.amp.autocast(device_type=str(device)):
+        # Disable autocast - force float32
+        with torch.no_grad():
             text_tokens = tokenizer([text]).to(device)
             text_features = model.encode_text(text_tokens)
             text_features /= text_features.norm(dim=-1, keepdim=True)
             
-            embedding = text_features[0].cpu().numpy().tolist()
+            # Ensure float32 output
+            embedding = text_features[0].float().cpu().numpy().tolist()
             return [float(x) for x in embedding]
             
     except Exception as e:
@@ -83,11 +82,13 @@ def get_image_embedding(image_url: str) -> list:
         image = Image.open(BytesIO(response.content)).convert("RGB")
         image_tensor = preprocess(image).unsqueeze(0).to(device)
         
-        with torch.no_grad(), torch.amp.autocast(device_type=str(device)):
+        # Disable autocast - force float32
+        with torch.no_grad():
             image_features = model.encode_image(image_tensor)
             image_features /= image_features.norm(dim=-1, keepdim=True)
             
-            embedding = image_features[0].cpu().numpy().tolist()
+            # Ensure float32 output
+            embedding = image_features[0].float().cpu().numpy().tolist()
             return [float(x) for x in embedding]
             
     except Exception as e:
