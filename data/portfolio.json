@@ -74,7 +74,8 @@
             "status": "completed",
             "demo_url": null,
             "github_url": null,
-            "image": null,
+            "image": "/images/projects/3d-mri.png",
+            "video": "https://ucfhgxicgoylzifecdrl.supabase.co/storage/v1/object/public/portfolio/projects/3D%20MRI%20SR/Enhancing%20MRI%20Scans%20with%20AI%20MRI%20Enhance%203D%20-%20Revolutionizing%20Medical%20Imaging%20-%20Sajeev%20Kugarajah%20(360p,%20h264).mp4",
             "category": "ai_ml",
             "documents": [
                 {

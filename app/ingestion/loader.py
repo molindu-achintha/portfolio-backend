@@ -50,11 +50,10 @@ def create_text_chunks(data):
     skills_text = f"""
     Technical Skills:
     - Programming Languages: {', '.join(skills.get('languages', []))}
-    - Frontend: {', '.join(skills.get('frontend', []))}
-    - Backend: {', '.join(skills.get('backend', []))}
     - AI/ML: {', '.join(skills.get('ai_ml', []))}
-    - Databases: {', '.join(skills.get('databases', []))}
-    - DevOps: {', '.join(skills.get('devops', []))}
+    - Frameworks & Libraries: {', '.join(skills.get('frameworks_libraries', []))}
+    - Development Platforms: {', '.join(skills.get('development_platforms', []))}
+    - Cloud: {', '.join(skills.get('cloud', []))}
     """
     chunks.append({
         "id": "skills",
@@ -63,7 +62,7 @@ def create_text_chunks(data):
         "metadata": {"section": "skills"}
     })
     
-    # Project chunks (one per project for granular retrieval)
+    # Project chunks 
     for project in data.get('projects', []):
         project_text = f"""
         Project: {project.get('title', '')}
@@ -80,7 +79,7 @@ def create_text_chunks(data):
             docs_str = "\n".join([f"- {d['name']} ({d['type']}): {d['url']}" for d in project['documents']])
             project_text += f"\nDocuments:\n{docs_str}\n"
         
-        # Metadata now includes image_url
+        # Only PROJECTS have image_url in metadata
         chunks.append({
             "id": f"project-{project.get('id', 'unknown')}",
             "text": project_text.strip(),
@@ -91,7 +90,8 @@ def create_text_chunks(data):
                 "title": project.get('title'),
                 "demo_url": project.get('demo_url'),
                 "github_url": project.get('github_url'),
-                "image_url": project.get('image')
+                "image_url": project.get('image'),  # Only projects have images
+                "video_url": project.get('video')   # Only projects have videos
             }
         })
     
@@ -117,7 +117,7 @@ def create_text_chunks(data):
         edu_text = f"""
         Education: {edu.get('degree', '')} from {edu.get('institution', '')}
         Duration: {edu.get('duration', '')}
-        Grade: {edu.get('grade', '')}
+        Location: {edu.get('location', '')}
         Description: {edu.get('description', '')}
         Key Courses: {', '.join(edu.get('courses', []))}
         """
@@ -126,6 +126,21 @@ def create_text_chunks(data):
             "text": edu_text.strip(),
             "type": "education",
             "metadata": {"section": "education", "institution": edu.get('institution')}
+        })
+    
+    # Certifications chunks
+    for cert in data.get('certifications', []):
+        cert_text = f"""
+        Certification: {cert.get('name', '')}
+        Issuer: {cert.get('issuer', '')}
+        Date: {cert.get('date', '')}
+        URL: {cert.get('url', '')}
+        """
+        chunks.append({
+            "id": f"certification-{cert.get('id', 'unknown')}",
+            "text": cert_text.strip(),
+            "type": "certification",
+            "metadata": {"section": "certifications", "name": cert.get('name')}
         })
     
     # Contact chunk
